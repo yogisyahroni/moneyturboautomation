@@ -14,35 +14,41 @@ from loguru import logger
 def search_youtube(query: str, max_results: int = 5, language: str = "id") -> List[Dict]:
     """
     Cari video di YouTube berdasarkan kata kunci
-    
+    Uses yt-dlp search (built-in, no extra deps)
+
     Returns:
         List of {title, url, duration, channel, description}
     """
     try:
-        from youtube_search import YoutubeSearch
-    except ImportError:
-        logger.error("youtube-search-python not installed. Install with: pip install youtube-search-python")
-        return []
-    
-    try:
-        results = YoutubeSearch(query, max_results=max_results).to_dict()
+        search_query = f"ytsearch{max_results}:{query}"
+        result = subprocess.run(
+            ["yt-dlp", "--dump-json", "--no-download", "--flat-playlist",
+             "--playlist-end", str(max_results), search_query],
+            capture_output=True, text=True, timeout=30
+        )
+
         videos = []
-        for r in results:
-            # Convert duration "5:30" → detik
-            dur_str = r.get("duration", "0:00")
-            parts = list(map(int, dur_str.split(":")))
-            duration_secs = sum(p * 60 ** (len(parts) - 1 - i) for i, p in enumerate(parts))
-            
-            videos.append({
-                "title": r.get("title", ""),
-                "url": f"https://youtube.com{r.get('url_suffix', '')}" if r.get("url_suffix") else "",
-                "duration": duration_secs,
-                "duration_str": dur_str,
-                "channel": r.get("channel", ""),
-                "thumbnail": r.get("thumbnails", [""])[0] if r.get("thumbnails") else "",
-                "description": r.get("long_desc", "")[:200],
-            })
-        
+        for line in result.stdout.strip().split("\n"):
+            if not line.strip():
+                continue
+            try:
+                data = json.loads(line)
+                dur = data.get("duration", 0) or 0
+                minutes, seconds = divmod(int(dur), 60)
+                dur_str = f"{minutes}:{seconds:02d}"
+
+                videos.append({
+                    "title": data.get("title", ""),
+                    "url": f"https://youtube.com/watch?v={data.get('id', '')}",
+                    "duration": dur,
+                    "duration_str": dur_str,
+                    "channel": data.get("channel", ""),
+                    "thumbnail": data.get("thumbnail", ""),
+                    "description": (data.get("description", "") or "")[:200],
+                })
+            except json.JSONDecodeError:
+                continue
+
         logger.success(f"YouTube search: found {len(videos)} videos for '{query}'")
         return videos
     except Exception as e:
@@ -146,6 +152,22 @@ def download_video_by_id(video_id: str, output_dir: str) -> Optional[str]:
 
 # ─── Scene Detection ─────────────────────────────────────────────────
 
+def _get_clip_duration(video_path: str) -> float:
+    """Get video duration in seconds using ffprobe"""
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "default=noprint_wrappers=1:nokey=1", video_path],
+            capture_output=True, text=True, timeout=15
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return float(result.stdout.strip())
+    except Exception:
+        pass
+    return 0
+
+
 def detect_scenes(video_path: str, threshold: float = 20.0) -> List[Dict]:
     """
     Deteksi scene perubahan dalam video pake PySceneDetect
@@ -166,8 +188,8 @@ def detect_scenes(video_path: str, threshold: float = 20.0) -> List[Dict]:
         
         scenes = []
         for i, scene in enumerate(scene_list):
-            start = scene[0].get_seconds()
-            end = scene[1].get_seconds()
+            start = scene[0].seconds
+            end = scene[1].seconds
             scenes.append({
                 "index": i,
                 "start_time": start,
