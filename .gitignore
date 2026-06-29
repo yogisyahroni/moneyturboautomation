@@ -37,3 +37,7 @@ streamlit.log
 .codegraph
 /docs/superpowers
 .understand-anything
+
+# MoneyTurbo Automation output
+output/
+extracted_template.json

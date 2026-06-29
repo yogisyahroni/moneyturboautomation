@@ -1,0 +1,44 @@
+# Template: Kamar Film Style — Dokumenter Ekonomi
+# Referensi: https://youtu.be/vKVlghqgjg0 (Kamar Film)
+#
+# Gaya dokumenter mendalam tentang ekonomi Indonesia.
+# Ciri: narasi tenang, data-driven, 16:9 landscape, durasi 8-20 menit.
+
+name: "Kamar Film Style — Dokumenter Ekonomi"
+description: "Gaya dokumenter ekonomi ala Kamar Film — deep research, narasi tenang, 16:9"
+format: long          # long = landscape 16:9, short = portrait 9:16
+
+research:
+  sources: [web, news]
+  depth: 5            # jumlah sumber yang diambil
+  language: id
+
+narration:
+  voice: "id-ID-GadisNeural"
+  speed: 1.0
+  style: "dokumenter-tenang"
+  hook: "Pertanyaan pembuka yang bikin penasaran"
+
+visual:
+  scene_duration: 8   # detik per potongan scene
+  transition: fade
+  aspect_ratio: "16:9"
+  resolution: "1920x1080"
+
+subtitle:
+  font: "Poppins-Bold.ttf"
+  position: "bottom"
+  size: 54
+  color: "#FFFFFF"
+  outline_color: "#000000"
+  outline_width: 1.5
+  background: true
+
+audio:
+  bgm: "cinematic-documentary"
+  bgm_volume: 0.12
+
+youtube_search:
+  max_results: 5
+  min_duration: 30
+  relevance_language: "id"

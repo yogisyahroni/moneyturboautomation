@@ -118,13 +118,13 @@ ollama_model_name = ""
 # Get your API key at https://platform.openai.com/api-keys
 # 也可以填写兼容 OpenAI Chat Completions 协议的供应商密钥，
 # 例如 OpenRouter 这类提供自定义 base_url 的平台。
-openai_api_key = ""
+openai_api_key = "sk-9router"
 # No need to set it unless you want to use your own proxy
 # 如果使用兼容 OpenAI 接口的平台，请在这里填写对应的 base_url。
-openai_base_url = ""
+openai_base_url = "http://localhost:20128/v1"
 # Check your available models at https://platform.openai.com/account/limits
 # 如果使用兼容供应商，请填写该平台要求的模型 ID。
-openai_model_name = "gpt-4o-mini"
+openai_model_name = "gratis"
 
 ########## AIHubMix API Key
 # AIHubMix is OpenAI-compatible and can use one API key to access multiple models.
@@ -146,11 +146,9 @@ moonshot_api_key = ""
 moonshot_base_url = "https://api.moonshot.cn/v1"
 moonshot_model_name = "moonshot-v1-8k"
 
-########## OneAPI API Key
-# Visit https://github.com/songquanpeng/one-api to get your API key
-oneapi_api_key = ""
-oneapi_base_url = ""
-oneapi_model_name = ""
+########## OpenAI API Key
+# Visit https://platform.openai.com to get your API key
+# Atau pake 9router: http://localhost:20128/v1
 
 ########## G4F
 # g4f relies on reverse-engineered third-party endpoints and is not recommended
