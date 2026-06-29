@@ -1,10 +1,10 @@
 """
 Config bridge — menghubungkan modul baru dengan config MoneyPrinterTurbo
+Format: Match `from app.config import config` → config.app.get() pattern
 """
 import os
 import json
 
-# Default: baca dari MONEYTURBO_CONFIG env var (di-set oleh run.py)
 _default = {
     "llm_provider": "openai",
     "openai_api_key": "sk-9router",
@@ -22,4 +22,23 @@ def _get_config():
             pass
     return dict(_default)
 
-app = _get_config()
+# Struct yang cocok sama interface app.config:
+# config.app.get("key") → dict-like access
+class ConfigBridge:
+    def __init__(self):
+        self.app = _get_config()
+        self.ui = {}
+        self.whisper = {}
+        self.proxy = {}
+        self.azure = {}
+        self.siliconflow = {}
+        self.elevenlabs = {}
+        self.chatterbox = {}
+        self.log_level = "INFO"
+        self.listen_host = "0.0.0.0"
+        self.listen_port = 8080
+        self.project_name = "MoneyTurboAutomation"
+        self.project_version = "2.0.0"
+        self.project_description = "Automated content creation"
+
+config = ConfigBridge()

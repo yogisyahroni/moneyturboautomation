@@ -7,7 +7,7 @@ import re
 from typing import List, Dict, Optional
 from loguru import logger
 
-from app.new_config import app as config
+from app.new_config import config
 
 
 def _call_llm(prompt: str) -> str:

@@ -41,3 +41,4 @@ streamlit.log
 # MoneyTurbo Automation output
 output/
 extracted_template.json
+.hermes-tmp.*

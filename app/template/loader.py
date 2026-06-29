@@ -33,7 +33,7 @@ BUILTIN_TEMPLATES = {
             "resolution": "1920x1080",
         },
         "subtitle": {
-            "font": "Poppins-Bold.ttf",
+            "font": "BeVietnamPro-Bold.ttf",
             "position": "bottom",
             "size": 54,
             "color": "#FFFFFF",
@@ -73,7 +73,7 @@ BUILTIN_TEMPLATES = {
             "resolution": "1080x1920",
         },
         "subtitle": {
-            "font": "Poppins-Bold.ttf",
+            "font": "BeVietnamPro-Bold.ttf",
             "position": "center",
             "size": 64,
             "color": "#FFFFFF",
@@ -113,7 +113,7 @@ BUILTIN_TEMPLATES = {
             "resolution": "1080x1920",
         },
         "subtitle": {
-            "font": "Poppins-Bold.ttf",
+            "font": "BeVietnamPro-Bold.ttf",
             "position": "center",
             "size": 60,
             "color": "#FFFFFF",
